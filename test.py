@@ -88,16 +88,6 @@ class TestModel:
         print("Z Error: {}".format(np.mean(error[:, 2]) * 1000))
 
 
-        # Calculate Joint Error
-        joint_error = np.abs(predicted_joint_space - test_output)
-
-        # Print Results in degrees
-        print("Joint Error")
-        print("Joint 1 Error: {}".format(np.mean(joint_error[:, 0]) * 180 / np.pi))
-        print("Joint 2 Error: {}".format(np.mean(joint_error[:, 1]) * 180 / np.pi))
-        print("Joint 3 Error: {}".format(np.mean(joint_error[:, 2]) * 180 / np.pi))
-        print("Joint 4 Error: {}".format(np.mean(joint_error[:, 3]) * 180 / np.pi))
-
 
 
 
@@ -111,9 +101,9 @@ if __name__ == "__main__":
     arguments.add_argument("--dataset_name", type=str, default="AL5D_100k")
     arguments.add_argument("--seed", type=int, default=0)
     arguments.add_argument("--test_num_samples", type=int, default=100)
-    arguments.add_argument("--checkpoint", type=str, default="model_relu.pth")
+    arguments.add_argument("--checkpoint", type=str, default="model_sigmoid_MSELoss.pth")
     arguments.add_argument("--device", type=str, default="cuda:0")
-    arguments.add_argument("--activation", type=str, default="relu")
+    arguments.add_argument("--activation", type=str, default="sigmoid")
 
     args = arguments.parse_args()
     main(args)

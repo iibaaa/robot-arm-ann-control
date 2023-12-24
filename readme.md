@@ -24,11 +24,6 @@ Mean Error: 1.4018116053193808
 X Error: 1.2792784254997969
 Y Error: 1.3350880471989512
 Z Error: 1.591068459674716
-Joint Error
-Joint 1 Error: 0.6846312685322212
-Joint 2 Error: 0.8685092991382204
-Joint 3 Error: 0.7744562068849696
-Joint 4 Error: 43.819467940999495
 
 #### Case2 - Tanh Function
 * Train Time: 685 seconds
@@ -43,11 +38,7 @@ Mean Error: 2.2377732675522566
 X Error: 2.6383595541119576
 Y Error: 1.534604001790285
 Z Error: 2.540356246754527
-Joint Error
-Joint 1 Error: 0.7154998815992707
-Joint 2 Error: 1.1135343848453472
-Joint 3 Error: 1.5507567782892542
-Joint 4 Error: 43.40239268461642
+
 
 #### Case3 - ReLU Function
 * Train Time: 688 seconds
@@ -62,11 +53,6 @@ Mean Error: 3.109402721747756
 X Error: 2.9858071357011795
 Y Error: 2.837955253198743
 Z Error: 3.5044453106820583
-Joint Error
-Joint 1 Error: 1.9558159176532772
-Joint 2 Error: 1.6364386199410081
-Joint 3 Error: 1.4448528809392083
-Joint 4 Error: 45.63897910947212
 
 
 ### Test 2 - Loss Functions
@@ -87,6 +73,11 @@ Joint 4 Error: 45.63897910947212
 * Mean Error: 0.2169
 * Accuracy: 0.3719
 
+Mean Error: 3.2438759226351976
+X Error: 3.3444499131292105
+Y Error: 3.480499144643545
+Z Error: 2.9066794086247683
+
 #### Case2 - Mean Absolute Error
 * Train Time: 650 seconds
 * Epochs Number: 292
@@ -94,3 +85,8 @@ Joint 4 Error: 45.63897910947212
 * Test Loss: 0.2076
 * Mean Error: 0.2076
 * Accuracy: 1.0
+
+Mean Error: 1.1453712359070778
+X Error: 1.0893478756770492
+Y Error: 1.0242402786388993
+Z Error: 1.3225253205746412

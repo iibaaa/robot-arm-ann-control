@@ -68,7 +68,6 @@ class TrainModel:
 
         print("Loaded dataset from {}".format(os.path.join(self.args.dataset_path, self.args.dataset_name)))
 
-
     def train(self):
         criterion = torch.nn.L1Loss()
         optimizer = optim.Adam(self.ann_model.parameters(), lr=self.args.learning_rate)
@@ -134,8 +133,9 @@ class TrainModel:
                 test_losses.append(test_running_loss / len(test_loader))
                 train_losses.append(train_running_loss / len(train_loader))
 
-                print("Epoch: {} | Train Loss: {:.4f} | Test Loss: {:.4f} | Mean Error: {:.4f} | Accuracy: {:.4f}".format(
-                    epoch + 1, train_losses[-1], test_losses[-1], mean_errors[-1], accuracy[-1]))
+                print(
+                    "Epoch: {} | Train Loss: {:.4f} | Test Loss: {:.4f} | Mean Error: {:.4f} | Accuracy: {:.4f}".format(
+                        epoch + 1, train_losses[-1], test_losses[-1], mean_errors[-1], accuracy[-1]))
 
                 if accuracy[-1] > self.args.stop_threshold:
                     print(f"Accuracy threshold reached to {self.args.stop_threshold}, "
@@ -176,10 +176,9 @@ class TrainModel:
             np.save(f"results_{self.args.activation}_{self.args.output_name}.npy", results)
 
 
-
-
 def main(args):
     TrainModel(args)
+
 
 if __name__ == "__main__":
     arguments = argparse.ArgumentParser()
@@ -195,7 +194,6 @@ if __name__ == "__main__":
     arguments.add_argument("--output_name", type=str, default="model_sigmoid_mae")
     arguments.add_argument("--stop_threshold", type=float, default=1.0)
     arguments.add_argument("--activation", type=str, default="sigmoid")
-
 
     args = arguments.parse_args()
     main(args)
