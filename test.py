@@ -101,7 +101,7 @@ if __name__ == "__main__":
     arguments.add_argument("--dataset_name", type=str, default="AL5D_100k")
     arguments.add_argument("--seed", type=int, default=0)
     arguments.add_argument("--test_num_samples", type=int, default=100)
-    arguments.add_argument("--checkpoint", type=str, default="model_sigmoid_MSELoss.pth")
+    arguments.add_argument("--checkpoint", type=str, default="model_sigmoid_mae_50k_1.pth")
     arguments.add_argument("--device", type=str, default="cuda:0")
     arguments.add_argument("--activation", type=str, default="sigmoid")
 
