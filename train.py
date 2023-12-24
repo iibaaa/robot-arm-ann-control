@@ -29,9 +29,12 @@ class TrainModel:
 
     def load_model(self):
         if not self.args.checkpoint == "None":
-            if os.path.exists(self.args.checkpoint):
-                self.ann_model.load_state_dict(torch.load(self.args.checkpoint))
-                print("Loaded model from checkpoint {}".format(self.args.checkpoint))
+            chk = os.path.join("weights", self.args.checkpoint)
+            if os.path.exists(chk):
+                self.ann_model.load_state_dict(torch.load(chk))
+                print("Loaded model from checkpoint {}".format(chk))
+            else:
+                print("Checkpoint {} does not exist".format(chk))
 
         # Set model to device
         try:
@@ -163,9 +166,9 @@ if __name__ == "__main__":
     arguments.add_argument("--learning_rate", type=float, default=0.001)
     arguments.add_argument("--seed", type=int, default=42)
     arguments.add_argument("--accuracy_threshold", type=float, default=0.25)
-    arguments.add_argument("--checkpoint", type=str, default="None")
+    arguments.add_argument("--checkpoint", type=str, default="model.pt")
     arguments.add_argument("--device", type=str, default="cuda:0")
-    arguments.add_argument("--output_name", type=str, default="model_relu.pt")
+    arguments.add_argument("--output_name", type=str, default="model_sigmoid.pt")
     arguments.add_argument("--stop_threshold", type=float, default=1.0)
 
 

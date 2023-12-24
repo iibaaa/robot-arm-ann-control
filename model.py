@@ -5,7 +5,7 @@ INPUT_SIZE = 3
 OUTPUT_SIZE = 4
 NUM_HIDDEN_LAYERS = 3
 HIDDEN_SIZE = 25
-ACTIVATION = nn.ReLU()
+ACTIVATION = nn.Sigmoid()
 
 
 class RobotANNModel(nn.Module):
