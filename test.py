@@ -17,7 +17,7 @@ class TestModel:
         self.args = args
 
         self.robot_model = get_robot_model()
-        self.ann_model = get_ANN_model()
+        self.ann_model = None
         self.load_model()
         self.load_test_set()
         self.test()
@@ -25,12 +25,16 @@ class TestModel:
     def load_model(self):
         if self.args.checkpoint == "None":
             print("No checkpoint provided")
-            return
+            exit()
 
+        self.ann_model = get_ANN_model(activation=self.args.activation)
         weigh_path = os.path.join("weights", self.args.checkpoint)
         if os.path.exists(weigh_path):
             self.ann_model.load_state_dict(torch.load(weigh_path))
             print("Loaded model from checkpoint {}".format(self.args.checkpoint))
+        else:
+            print("Checkpoint {} does not exist".format(self.args.checkpoint))
+            exit()
 
     def load_test_set(self):
         world_space_name = self.args.dataset_name + "_world_space.npy"
@@ -107,8 +111,9 @@ if __name__ == "__main__":
     arguments.add_argument("--dataset_name", type=str, default="AL5D_100k")
     arguments.add_argument("--seed", type=int, default=0)
     arguments.add_argument("--test_num_samples", type=int, default=100)
-    arguments.add_argument("--checkpoint", type=str, default="model_relu.pt")
+    arguments.add_argument("--checkpoint", type=str, default="model_relu.pth")
     arguments.add_argument("--device", type=str, default="cuda:0")
+    arguments.add_argument("--activation", type=str, default="relu")
 
     args = arguments.parse_args()
     main(args)

@@ -5,7 +5,11 @@ INPUT_SIZE = 3
 OUTPUT_SIZE = 4
 NUM_HIDDEN_LAYERS = 3
 HIDDEN_SIZE = 25
-ACTIVATION = nn.Sigmoid()
+ACTIVATION = "sigmoid"
+
+ACTIVATIONS = {"sigmoid": nn.Sigmoid(),
+               "relu": nn.ReLU(),
+               "tanh": nn.Tanh()}
 
 
 class RobotANNModel(nn.Module):
@@ -36,8 +40,15 @@ class RobotANNModel(nn.Module):
         return self.model(x)
 
 
-def get_ANN_model():
-    return RobotANNModel(INPUT_SIZE, OUTPUT_SIZE, NUM_HIDDEN_LAYERS, HIDDEN_SIZE, ACTIVATION)
+def get_ANN_model(input_size=INPUT_SIZE,
+                  output_size=OUTPUT_SIZE,
+                  num_hidden_layers=NUM_HIDDEN_LAYERS,
+                  hidden_size=HIDDEN_SIZE,
+                  activation=ACTIVATION):
+    activation = ACTIVATIONS[activation]
+    model = RobotANNModel(input_size, output_size, num_hidden_layers, hidden_size, activation)
+    return model
+
 
 def get_robot_model():
     return rtb.models.AL5D()

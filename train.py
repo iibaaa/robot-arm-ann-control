@@ -21,13 +21,16 @@ class TrainModel:
         self.train_dataset = None
         self.test_dataset = None
 
-        self.ann_model = get_ANN_model()
+        self.ann_model = None
 
         self.load_data_set()
         self.load_model()
         self.train()
 
     def load_model(self):
+
+        self.ann_model = get_ANN_model(activation=self.args.activation)
+
         if not self.args.checkpoint == "None":
             chk = os.path.join("weights", self.args.checkpoint)
             if os.path.exists(chk):
@@ -146,13 +149,34 @@ class TrainModel:
             if not os.path.exists("weights"):
                 os.makedirs("weights")
 
-            output = os.path.join("weights", self.args.output_name)
+            output_name = self.args.output_name + ".pth"
+
+            output = os.path.join("weights", output_name)
 
             torch.save(self.ann_model.state_dict(), output)
 
-            print("Model saved to {}".format(self.args.output_name))
+            print(f"Model saved to {output}")
 
             print("Training complete")
+
+            # Save results
+            results = dict()
+            results["accuracy"] = accuracy
+            results["mean_errors"] = mean_errors
+            results["train_losses"] = train_losses
+            results["test_losses"] = test_losses
+            results["epochs"] = epoch + 1
+            results["training_time"] = end_time - start_time
+            results["accuracy_threshold"] = self.args.accuracy_threshold
+            results["stop_threshold"] = self.args.stop_threshold
+            results["seed"] = self.args.seed
+            results["batch_size"] = self.args.batch_size
+            results["learning_rate"] = self.args.learning_rate
+            results["learning_rate"] = self.args.learning_rate
+            np.save(f"results_{self.args.activation}_{self.args.output_name}.npy", results)
+
+
+
 
 def main(args):
     TrainModel(args)
@@ -161,15 +185,16 @@ if __name__ == "__main__":
     arguments = argparse.ArgumentParser()
     arguments.add_argument("--dataset_path", type=str, default="dataset")
     arguments.add_argument("--dataset_name", type=str, default="AL5D_100k")
-    arguments.add_argument("--epochs", type=int, default=1000)
+    arguments.add_argument("--epochs", type=int, default=300)
     arguments.add_argument("--batch_size", type=int, default=20)
     arguments.add_argument("--learning_rate", type=float, default=0.001)
     arguments.add_argument("--seed", type=int, default=42)
     arguments.add_argument("--accuracy_threshold", type=float, default=0.25)
-    arguments.add_argument("--checkpoint", type=str, default="model.pt")
+    arguments.add_argument("--checkpoint", type=str, default="None")
     arguments.add_argument("--device", type=str, default="cuda:0")
-    arguments.add_argument("--output_name", type=str, default="model_sigmoid.pt")
+    arguments.add_argument("--output_name", type=str, default="model_sigmoid_mae")
     arguments.add_argument("--stop_threshold", type=float, default=1.0)
+    arguments.add_argument("--activation", type=str, default="sigmoid")
 
 
     args = arguments.parse_args()
