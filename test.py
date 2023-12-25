@@ -119,7 +119,7 @@ if __name__ == "__main__":
     arguments.add_argument("--dataset_name", type=str, default="AL5D_50k")
     arguments.add_argument("--seed", type=int, default=0)
     arguments.add_argument("--test_num_samples", type=int, default=100)
-    arguments.add_argument("--checkpoint", type=str, default="model_relu.pth")
+    arguments.add_argument("--checkpoint", type=str, default="model_sigmoid_mae_10k.pth")
     arguments.add_argument("--device", type=str, default="cpu")
     arguments.add_argument("--activation", type=str, default="sigmoid")
 
