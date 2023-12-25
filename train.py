@@ -34,7 +34,7 @@ class TrainModel:
         if not self.args.checkpoint == "None":
             chk = os.path.join("weights", self.args.checkpoint)
             if os.path.exists(chk):
-                self.ann_model.load_state_dict(torch.load(chk))
+                self.ann_model.load_state_dict(torch.load(chk, map_location=torch.device(self.args.device)))
                 print("Loaded model from checkpoint {}".format(chk))
             else:
                 print("Checkpoint {} does not exist".format(chk))
@@ -172,8 +172,7 @@ class TrainModel:
             results["seed"] = self.args.seed
             results["batch_size"] = self.args.batch_size
             results["learning_rate"] = self.args.learning_rate
-            results["learning_rate"] = self.args.learning_rate
-            np.save(f"results_{self.args.activation}_{self.args.output_name}.npy", results)
+            np.save(f"results/train_results_{self.args.output_name}.npy", results)
 
 
 def main(args):

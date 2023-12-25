@@ -2,7 +2,7 @@ import argparse
 import os
 import torch
 import numpy as np
-from torch.utils.data import DataLoader, TensorDataset
+import time
 
 
 try:
@@ -30,7 +30,7 @@ class TestModel:
         self.ann_model = get_ANN_model(activation=self.args.activation)
         weigh_path = os.path.join("weights", self.args.checkpoint)
         if os.path.exists(weigh_path):
-            self.ann_model.load_state_dict(torch.load(weigh_path))
+            self.ann_model.load_state_dict(torch.load(weigh_path, map_location=torch.device(self.args.device)))
             print("Loaded model from checkpoint {}".format(self.args.checkpoint))
         else:
             print("Checkpoint {} does not exist".format(self.args.checkpoint))
@@ -63,10 +63,11 @@ class TestModel:
         test_data = self.test_dataset[test_samples_idx]
         test_output = self.joint_dataset[test_samples_idx]
 
+        s1 = time.time()
         # Predicted Joint Space
         with torch.no_grad():
             predicted_joint_space = self.ann_model(torch.tensor(test_data, dtype=torch.float32).to(self.args.device))
-
+        s2 = time.time()
         predicted_joint_space = predicted_joint_space.cpu().numpy()
 
         # Calculate Target World Space from predicted joint space
@@ -81,11 +82,28 @@ class TestModel:
 
         # Print Results
         print("Test Results")
+        print("Run Time : {} ms".format((s2-s1)*1000))
         print("Mean Error: {}".format(np.mean(error) * 1000))
 
         print("X Error: {}".format(np.mean(error[:, 0]) * 1000))
         print("Y Error: {}".format(np.mean(error[:, 1]) * 1000))
         print("Z Error: {}".format(np.mean(error[:, 2]) * 1000))
+
+        # Save results
+        results = dict()
+        results["test_time"] = s2-s1
+        results["test_dataset"] = self.args.dataset_name
+        results["seed"] = self.args.seed
+        results["test_sample"] = self.args.test_num_samples
+        results["error"] = error
+        results["mean_error"] = np.mean(error) * 1000
+        results["x_error"] = np.mean(error[:, 0]) * 1000
+        results["y_error"] = np.mean(error[:, 1]) * 1000
+        results["z_error"] = np.mean(error[:, 2]) * 1000
+
+        model_name = self.args.checkpoint.split(".")[0]
+        np.save(f"results/test_results_{model_name}.npy", results)
+
 
 
 
@@ -98,11 +116,11 @@ def main(args):
 if __name__ == "__main__":
     arguments = argparse.ArgumentParser()
     arguments.add_argument("--dataset_path", type=str, default="dataset")
-    arguments.add_argument("--dataset_name", type=str, default="AL5D_100k")
+    arguments.add_argument("--dataset_name", type=str, default="AL5D_50k")
     arguments.add_argument("--seed", type=int, default=0)
     arguments.add_argument("--test_num_samples", type=int, default=100)
-    arguments.add_argument("--checkpoint", type=str, default="model_sigmoid_mae_50k_1.pth")
-    arguments.add_argument("--device", type=str, default="cuda:0")
+    arguments.add_argument("--checkpoint", type=str, default="model_relu.pth")
+    arguments.add_argument("--device", type=str, default="cpu")
     arguments.add_argument("--activation", type=str, default="sigmoid")
 
     args = arguments.parse_args()
