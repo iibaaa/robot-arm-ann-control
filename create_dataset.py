@@ -16,13 +16,18 @@ def visualize(world_space):
     fig = plt.figure()
     ax = fig.add_subplot(111, projection='3d')
     ax.scatter(world_space[:, 0], world_space[:, 1], world_space[:, 2],
-               c='r', marker='o',
+               c='k', marker='o',
                label='World Space',
                s=0.5)
+    ax.title.set_text(f'XYZ World Coordinates {int(len(world_space)/1000)}k Samples')
 
-    ax.set_xlabel('X Label')
-    ax.set_ylabel('Y Label')
-    ax.set_zlabel('Z Label')
+    ax.set_xlabel('X (m)')
+    ax.set_ylabel('Y (m)')
+    ax.set_zlabel('Z (m)')
+    ax.grid()
+
+    # Save figure
+    fig.savefig(f"images/world_space_cartesian_{len(world_space)}.png", dpi=300)
 
 
     # Plot XY - XZ - YZ planes
@@ -32,9 +37,11 @@ def visualize(world_space):
                c='k', marker='o',
                label='World Space',
                s=0.5)
-
-    ax.set_xlabel('X Label')
-    ax.set_ylabel('Y Label')
+    ax.title.set_text(f"XY World Coordinates {int(len(world_space)/1000)}k Samples")
+    ax.set_xlabel('X (m)')
+    ax.set_ylabel('Y (m)')
+    ax.grid()
+    fig.savefig(f"images/world_space_XY_{len(world_space)}.png", dpi=300)
 
     fig = plt.figure()
     ax = fig.add_subplot(111)
@@ -42,9 +49,12 @@ def visualize(world_space):
                c='k', marker='o',
                label='World Space',
                s=0.5)
+    ax.title.set_text(f"XZ World Coordinates {int(len(world_space)/1000)}k Samples")
+    ax.set_xlabel('X (m)')
+    ax.set_ylabel('Z (m)')
+    ax.grid()
+    fig.savefig(f"images/world_space_XZ_{len(world_space)}.png", dpi=300)
 
-    ax.set_xlabel('X Label')
-    ax.set_ylabel('Z Label')
 
     fig = plt.figure()
     ax = fig.add_subplot(111)
@@ -52,11 +62,13 @@ def visualize(world_space):
                c='k', marker='o',
                label='World Space',
                s=0.5)
+    ax.title.set_text(f"YZ World Coordinates {int(len(world_space)/1000)}k Samples")
+    ax.set_xlabel('Y (m)')
+    ax.set_ylabel('Z (m)')
+    ax.grid()
+    fig.savefig(f"images/world_space_YZ_{len(world_space)}.png", dpi=300)
 
-    ax.set_xlabel('Y Label')
-    ax.set_ylabel('Z Label')
-
-    plt.show()
+    #plt.show()
 
 
 def save(joint_space, world_space, args):
@@ -120,10 +132,10 @@ if __name__ == "__main__":
     arguments = argparse.ArgumentParser()
     arguments.add_argument("--output_path", type=str, default="dataset")
     arguments.add_argument("--dataset_name", type=str, default="AL5D")
-    arguments.add_argument("--num_samples", type=int, default=50000)
+    arguments.add_argument("--num_samples", type=int, default=100000)
     arguments.add_argument("--resolution", type=float, default=0.1)
-    arguments.add_argument("--visualize", type=bool, default=False)
-    arguments.add_argument("--save", type=bool, default=True)
+    arguments.add_argument("--visualize", type=bool, default=True)
+    arguments.add_argument("--save", type=bool, default=False)
 
     args = arguments.parse_args()
     main(args)
