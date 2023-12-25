@@ -19,7 +19,7 @@ def visualize(world_space):
                c='k', marker='o',
                label='World Space',
                s=0.5)
-    ax.title.set_text(f'XYZ World Coordinates {int(len(world_space)/1000)}k Samples')
+    ax.title.set_text(f'XYZ World Coordinates {int(len(world_space) / 1000)}k Samples')
 
     ax.set_xlabel('X (m)')
     ax.set_ylabel('Y (m)')
@@ -29,7 +29,6 @@ def visualize(world_space):
     # Save figure
     fig.savefig(f"images/world_space_cartesian_{len(world_space)}.png", dpi=300)
 
-
     # Plot XY - XZ - YZ planes
     fig = plt.figure()
     ax = fig.add_subplot(111)
@@ -37,7 +36,7 @@ def visualize(world_space):
                c='k', marker='o',
                label='World Space',
                s=0.5)
-    ax.title.set_text(f"XY World Coordinates {int(len(world_space)/1000)}k Samples")
+    ax.title.set_text(f"XY World Coordinates {int(len(world_space) / 1000)}k Samples")
     ax.set_xlabel('X (m)')
     ax.set_ylabel('Y (m)')
     ax.grid()
@@ -49,12 +48,11 @@ def visualize(world_space):
                c='k', marker='o',
                label='World Space',
                s=0.5)
-    ax.title.set_text(f"XZ World Coordinates {int(len(world_space)/1000)}k Samples")
+    ax.title.set_text(f"XZ World Coordinates {int(len(world_space) / 1000)}k Samples")
     ax.set_xlabel('X (m)')
     ax.set_ylabel('Z (m)')
     ax.grid()
     fig.savefig(f"images/world_space_XZ_{len(world_space)}.png", dpi=300)
-
 
     fig = plt.figure()
     ax = fig.add_subplot(111)
@@ -62,13 +60,13 @@ def visualize(world_space):
                c='k', marker='o',
                label='World Space',
                s=0.5)
-    ax.title.set_text(f"YZ World Coordinates {int(len(world_space)/1000)}k Samples")
+    ax.title.set_text(f"YZ World Coordinates {int(len(world_space) / 1000)}k Samples")
     ax.set_xlabel('Y (m)')
     ax.set_ylabel('Z (m)')
     ax.grid()
     fig.savefig(f"images/world_space_YZ_{len(world_space)}.png", dpi=300)
 
-    #plt.show()
+    # plt.show()
 
 
 def save(joint_space, world_space, args):
@@ -76,7 +74,7 @@ def save(joint_space, world_space, args):
     if not os.path.exists(args.output_path):
         os.makedirs(args.output_path)
 
-    main_name = f"{args.dataset_name}_{int(args.num_samples/1000)}k"
+    main_name = f"{args.dataset_name}_{int(args.num_samples / 1000)}k"
     # Joint Space
     output_file_joint_space = os.path.join(args.output_path, main_name + "_joint_space.npy")
     np.save(output_file_joint_space, joint_space)
@@ -93,14 +91,14 @@ def main(args):
     dof = 4
     resolution = radians(args.resolution)
 
-    # Create Seperate joint Space
-    joint_space_seperate = dict()
+    # Create Separate joint Space
+    joint_space_separate = dict()
 
     for i in range(dof):
         q_min = robot.qlim[0][i]
         q_max = robot.qlim[1][i]
-        joint_space_seperate[i] = np.arange(q_min, q_max, resolution, dtype=np.float32)
-        print("Joint {} space size: {}".format(i, len(joint_space_seperate[i])))
+        joint_space_separate[i] = np.arange(q_min, q_max, resolution, dtype=np.float32)
+        print("Joint {} space size: {}".format(i, len(joint_space_separate[i])))
 
     # Create Joint Space
     joint_space = np.empty((args.num_samples, dof), dtype=np.float32)
@@ -108,7 +106,7 @@ def main(args):
 
     np.random.seed(args.num_samples)
     for j in range(dof):
-        joint_space[:, j] = np.random.choice(joint_space_seperate[j], size=args.num_samples)
+        joint_space[:, j] = np.random.choice(joint_space_separate[j], size=args.num_samples)
 
     # Create World Space for xyz
     world_space = np.empty((args.num_samples, 3), dtype=np.float32)
@@ -124,8 +122,6 @@ def main(args):
 
     if args.visualize:
         visualize(world_space)
-
-
 
 
 if __name__ == "__main__":
