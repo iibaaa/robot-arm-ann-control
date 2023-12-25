@@ -98,6 +98,7 @@ def main(args):
         q_min = robot.qlim[0][i]
         q_max = robot.qlim[1][i]
         joint_space_separate[i] = np.arange(q_min, q_max, resolution, dtype=np.float32)
+        print("Joint limits: {} - {}".format(degrees(q_min), degrees(q_max)))
         print("Joint {} space size: {}".format(i, len(joint_space_separate[i])))
 
     # Create Joint Space
