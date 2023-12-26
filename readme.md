@@ -1,5 +1,7 @@
 ## VBS683 Project
 
+## In development
+
 ### Test 1 - Activation Functions
 * Common Parameters
   * Max Epochs: 300
